@@ -1,6 +1,44 @@
 'use strict';
-const {app, BrowserWindow, Menu} = require('electron');
+const {app, BrowserWindow, Menu, ipcMain} = require('electron');
 const path = require('path');
+const {exec} = require('child_process');
+
+ipcMain.on('discover', (event, arg) => {
+	exec('node ./magichome/discover.js', (error, stdout, stderr) => {
+		let x = JSON.parse(stdout);
+		event.sender.send('logDiscovery', x);
+		console.log(x);
+	});
+});
+
+ipcMain.on('lighton', (event, arg) => {
+	console.log(arg);
+	new Promise((resolve, reject) => {
+		let qs = queryState(arg);
+		if (qs !== undefined) {
+			resolve(qs);
+		}
+	}).then((result) => {
+		console.log(result)
+		if (result.on) {
+			exec(`node ./magichome/turnoff.js ${arg}`, (error, stdout, stderr) => {
+			
+			});
+		} else {
+			exec(`node ./magichome/turnon.js ${arg}`, (error, stdout, stderr) => {
+			
+			});
+		}
+	});
+})
+
+function queryState(addr) {
+	return new Promise((resolve, reject) => {
+		exec(`node ./magichome/queryState.js ${addr}`, (error, stdout, stderr) => {
+			resolve(JSON.parse(stdout));
+		});
+	});
+}
 
 // Adds debug features like hotkeys for triggering dev tools and reload
 require('electron-debug')();

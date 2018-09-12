@@ -8,6 +8,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Button } from 'reactstrap';
 import Test from './components/test';
+import PowerButton from './components/powerbutton';
+import Discover from './components/discover';
 import appStore from './appstore';
 import autobind from 'autobind-decorator';
 
@@ -21,13 +23,8 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <Button
-          color="danger"
-          onClick={this.doStuff}
-          size="sm"
-        >Danger!</Button>
-        <div className='black'>React + Bootstrap + MobX + WebPack Start Pack</div>
-        <Test />
+        <Discover />
+        <PowerButton />
       </div>
     );
   }

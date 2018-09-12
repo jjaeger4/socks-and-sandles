@@ -52,5 +52,10 @@ module.exports = {
   ],
   performance: {
     hints: false,
+  },
+  node: {
+    fs: 'empty',
+    net: 'empty',
+    dgram: 'empty',
   }
 };
